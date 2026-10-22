@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1d4ed8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SMART SPK">
+<title>SMART SPK</title>
+<link rel="icon" href="logo.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="./app-DcfGE5_2.js"></script>
+  <link rel="stylesheet" crossorigin href="./index-CjHq0lcN.css">
+<link rel="manifest" href="./manifest.webmanifest"></head>
+<body>
+<div id="bootView" class="login-wrap"><div class="login-card" style="text-align:center"><img class="logo" src="logo.png" alt="ตราโรงเรียน"><p class="sub">กำลังเปิดระบบ…</p></div></div>
+
+<!-- ตั้งค่าครั้งแรก -->
+<div id="setupView" class="login-wrap hidden">
+  <div class="login-card">
+    <img class="logo" src="logo.png" alt="ตราโรงเรียน">
+    <h1>ตั้งค่าระบบครั้งแรก</h1>
+    <p class="setup-note">ยังไม่มีผู้ดูแลระบบ กรอกข้อมูลเพื่อสร้างบัญชีผู้ดูแลระบบคนแรก (ทำได้ครั้งเดียว)</p>
+    <label for="suName">ชื่อ-สกุล</label><input id="suName">
+    <label for="suUser">ชื่อผู้ใช้</label><input id="suUser" autocomplete="off" placeholder="เช่น admin">
+    <label for="suEmail">อีเมลจริง (ไม่บังคับ ใช้กู้รหัสผ่าน)</label><input id="suEmail" type="email">
+    <label for="suPass">รหัสผ่าน (อย่างน้อย 6 ตัว)</label><input id="suPass" type="password">
+    <div class="err" id="suErr"></div>
+    <button class="btn block" type="button" id="suBtn">สร้างบัญชีผู้ดูแลระบบ</button>
+  </div>
+</div>
+
+<!-- เข้าสู่ระบบ -->
+<div id="loginView" class="login-wrap hidden">
+  <div class="login-card">
+    <img class="logo" src="logo.png" alt="ตราโรงเรียน">
+    <h1 id="loginTitle">SMART SPK</h1>
+    <p class="sub"><span id="loginSchool">โรงเรียนโซ่พิสัยพิทยาคม</span><br>กรุณาลงชื่อเข้าใช้</p>
+    <div class="tabs">
+      <button type="button" class="active" data-login-tab="staff">ครู / บุคลากร</button>
+      <button type="button" data-login-tab="parent">นักเรียน / ผู้ปกครอง</button>
+    </div>
+    <div id="loginForm">
+      <div id="staffFields">
+        <label for="lgUser">ชื่อผู้ใช้</label><input id="lgUser" autocomplete="username" autocapitalize="off">
+        <label for="lgPass">รหัสผ่าน</label><input id="lgPass" type="password" autocomplete="current-password">
+      </div>
+      <div id="parentFields" class="hidden">
+        <label for="lgStu">เลขประจำตัวนักเรียน</label><input id="lgStu" autocomplete="off" inputmode="numeric">
+        <label for="lgPin">รหัสผ่าน</label><input id="lgPin" type="password" inputmode="numeric" placeholder="วันเดือนปีเกิด 8 หลัก เช่น 01012556">
+      </div>
+      <div class="err" id="lgErr"></div>
+      <button class="btn block" type="button" id="loginBtn">เข้าสู่ระบบ</button>
+    </div>
+    <div class="hint" id="lgHint"></div>
+  </div>
+</div>
+
+<!-- แอป -->
+<div id="appView" class="hidden">
+  <header class="topbar">
+    <button class="icon-btn" id="menuBtn" type="button" aria-label="เปิดเมนู">☰</button>
+    <div class="brand"><img src="logo.png" alt="ตราโรงเรียน"><div><b id="appName">SMART SPK</b><small id="schoolName"></small></div></div>
+    <div class="top-search"><input id="gSearch" type="search" placeholder="ค้นหานักเรียน: ชื่อ หรือ เลขประจำตัว" autocomplete="off"></div>
+    <div class="who"><span class="demo-tag">โหมดทดลอง</span><span class="sync-chip ok" id="syncChip">บันทึกแล้ว</span><button class="icon-btn" id="refreshBtn" type="button" aria-label="โหลดข้อมูลล่าสุด" title="โหลดข้อมูลล่าสุด">↻</button><span id="topUser"></span><button class="btn ghost sm" id="logoutBtn" type="button">ออกจากระบบ</button></div>
+  </header>
+  <div class="overlay" id="overlay"></div>
+  <aside class="side" id="side"><nav id="nav"></nav><div class="side-foot"><div id="sideFoot"></div><button class="btn ghost sm" id="logoutBtn2" type="button" style="margin-top:8px">ออกจากระบบ</button></div></aside>
+  <main class="content">
+    <div class="page-head"><h1 id="pageTitle"></h1><div class="page-tools" id="pageTools"></div></div>
+    <div class="tabs-bar" id="tabs"></div>
+    <div id="content"></div>
+  </main>
+  <nav class="bottom-nav" id="bottomNav"></nav>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="modalRoot"></div>
+</body>
+</html>

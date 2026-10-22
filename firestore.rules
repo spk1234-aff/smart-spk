@@ -1,0 +1,64 @@
+rules_version = '2';
+// กฎความปลอดภัยของโปรเจกต์ spk-score-system (ใช้ร่วมกัน: spk-score-app + SMART SPK)
+// - collection ของ SMART SPK ขึ้นต้นด้วย ss_
+// - collection เดิมของ spk-score-app (students, log, uniformCheck, config, ...) คงสิทธิ์แบบเดิม: ทุกคนอ่านได้ ผู้ที่ล็อกอินเขียนได้
+//   (ก่อนเผยแพร่ ให้เทียบกับกฎเดิมในหน้า Firestore > Rules อีกครั้ง)
+service cloud.firestore {
+  match /databases/{db}/documents {
+    function signedIn() { return request.auth != null; }
+    function prof() { return get(/databases/$(db)/documents/ss_users/$(request.auth.uid)).data; }
+    function hasProf() { return signedIn() && exists(/databases/$(db)/documents/ss_users/$(request.auth.uid)); }
+    function staff() { return hasProf() && prof().disabled != true && prof().role in ['admin', 'teacher', 'duty']; }
+    function admin() { return hasProf() && prof().disabled != true && prof().role == 'admin'; }
+    function bootstrapped() { return exists(/databases/$(db)/documents/ss_config/bootstrap); }
+
+    // ---------------- SMART SPK
+    match /ss_config/{doc} {
+      allow get: if doc in ['bootstrap', 'public'];
+      allow read: if staff();
+      allow create: if (doc == 'bootstrap' && signedIn() && !bootstrapped()) || admin() || (!bootstrapped() && signedIn());
+      allow update: if admin();
+    }
+    match /ss_users/{uid} {
+      allow read: if staff() || (signedIn() && request.auth.uid == uid);
+      allow create: if admin() || (!bootstrapped() && signedIn() && request.auth.uid == uid && request.resource.data.role == 'admin');
+      allow update: if admin() || (signedIn() && request.auth.uid == uid
+                      && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'disabled', 'username', 'email']));
+      allow delete: if admin();
+    }
+    match /ss_config/directory {
+      // ครูแก้ชื่อ/เบอร์ของตัวเองใน directory ได้
+      allow update: if staff() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['t'])
+                    && request.resource.data.t.diff(resource.data.t).affectedKeys().hasOnly([request.auth.uid]);
+    }
+    match /ss_usernames/{u} {
+      allow get: if true;
+      allow list: if admin();
+      allow write: if admin() || (!bootstrapped() && signedIn());
+    }
+    match /ss_roster/{lv} { allow read: if staff(); allow write: if admin(); }
+    match /ss_history/{t} { allow read: if staff(); allow write: if admin(); }
+    // สรุปรายนักเรียน: ใครรู้รหัสลับ (เลขประจำตัว+รหัสผ่าน) อ่านได้เฉพาะเอกสารของตัวเอง
+    match /ss_stu/{key} { allow get: if true; allow list: if staff(); allow write: if staff(); }
+    match /ss_daily/{id} { allow read, write: if staff(); }
+    match /ss_area/{id} { allow read, write: if staff(); }
+    match /ss_period/{id} { allow read, write: if staff(); }
+    match /ss_scans/{id} { allow read, write: if staff(); }
+    match /ss_sessions/{id} { allow read, write: if staff(); }
+    match /ss_subjects/{id} {
+      allow read: if staff();
+      allow create: if staff() && request.resource.data.tid == request.auth.uid;
+      allow update, delete: if admin() || (staff() && resource.data.tid == request.auth.uid);
+    }
+    match /ss_behavior/{id} {
+      allow read, create, update: if staff();
+      allow delete: if admin() || (staff() && resource.data.byUid == request.auth.uid);
+    }
+
+    // ---------------- spk-score-app (collection เดิม)
+    match /{col}/{doc} {
+      allow read: if !col.matches('ss_.*');
+      allow write: if signedIn() && !col.matches('ss_.*');
+    }
+  }
+}
