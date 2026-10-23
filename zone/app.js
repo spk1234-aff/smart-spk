@@ -587,7 +587,7 @@ async function openDeduct(row, K = "zone") {
 // ---------------------------------------------------------------- page: แผนผัง
 async function pageMap() {
   $("#main").innerHTML = `<div class="card"><h2>แผนผังเขตพื้นที่รับผิดชอบ</h2><p class="small muted">แตะรูปเพื่อขยาย</p>
-    <a href="map.jpg" target="_blank"><img class="mapimg" src="map.jpg" alt="แผนผังเขตพื้นที่"></a></div>`;
+    <a href="map.png" target="_blank"><img class="mapimg" src="map.png" alt="แผนผังเขตพื้นที่"></a></div>`;
 }
 
 // ---------------------------------------------------------------- page: ตั้งค่า (แอดมิน)
