@@ -1,6 +1,6 @@
 // Service worker ของระบบตรวจเขต: เก็บไฟล์หน้าเว็บไว้ให้เปิดเร็ว (ข้อมูลจริงอ่านจาก Firestore เสมอ)
 const CACHE = "zone-v1";
-const SHELL = ["./", "index.html", "app.js", "map.jpg", "fonts/THSarabunNew.woff", "fonts/THSarabunNew-Bold.woff", "../logo.png", "../icon-192.png"];
+const SHELL = ["./", "index.html", "app.js", "map.jpg", "THSarabunNew.woff", "THSarabunNew-Bold.woff", "../logo.png", "../icon-192.png"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", (e) => {
