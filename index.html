@@ -16,8 +16,8 @@
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js" crossorigin>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js" crossorigin>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js" crossorigin>
-  <script type="module" crossorigin src="./app-D4cWL5GU.js"></script>
-  <link rel="stylesheet" crossorigin href="./index-BIz1oTOl.css">
+  <script type="module" crossorigin src="./app-BE4o1hLK.js"></script>
+  <link rel="stylesheet" crossorigin href="./index-9SbUq6ui.css">
 <link rel="manifest" href="./manifest.webmanifest"></head>
 <body>
 <div id="bootView" class="login-wrap"><div class="login-card" style="text-align:center"><img class="logo" src="logo.png" alt="ตราโรงเรียน"><p class="sub">กำลังเปิดระบบ…</p></div></div>
@@ -57,9 +57,11 @@
         <div id="lgPinWrap"><label for="lgPin">รหัสผ่าน</label><input id="lgPin" type="password" inputmode="numeric" placeholder="วันเดือนปีเกิด 8 หลัก เช่น 01012556"></div>
       </div>
       <div class="err" id="lgErr"></div>
+      <div class="lg-stat hidden" id="lgStat"><span class="spin"></span><span id="lgStatTxt">กำลังเข้าสู่ระบบ…</span></div>
       <button class="btn block" type="button" id="loginBtn">เข้าสู่ระบบ</button>
     </div>
     <div class="hint" id="lgHint"></div>
+    <div class="dev-credit hidden" id="lgDev"></div>
   </div>
 </div>
 
