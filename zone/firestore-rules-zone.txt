@@ -1,0 +1,13 @@
+// ===== เพิ่มสำหรับระบบตรวจเขตพื้นที่ (วางต่อจากบรรทัด  match /ss_behavior/{id} { ... }  และก่อนส่วน spk-score-app) =====
+    function council() { return hasProf() && prof().disabled != true && prof().role == 'council'; }
+    function affAdmin() { return hasProf() && prof().disabled != true
+                            && (prof().role == 'admin' || prof().adminAff == true || prof().affairs == true); }
+    match /ss_zone_cfg/{d}   { allow read: if staff() || council(); allow write: if affAdmin(); }
+    match /ss_zone_chk/{id}  { allow read: if staff() || council();
+                               allow create, update: if council() || affAdmin();
+                               allow delete: if affAdmin(); }
+    match /ss_zone_photo/{id}{ allow read: if staff() || council();
+                               allow create, update: if council() || affAdmin();
+                               allow delete: if council() || affAdmin(); }
+    match /ss_zone_ded/{id}  { allow read: if staff(); allow write: if affAdmin(); }
+// ===== จบส่วนที่เพิ่ม =====
