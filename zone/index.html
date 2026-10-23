@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1d4ed8">
+<title>ตรวจเขตพื้นที่ · SMART SPK</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="../icon-192.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<style>
+@font-face { font-family: THS; font-weight: 400; src: local("TH Sarabun New"), local("THSarabunNew"), url(https://cdn.jsdelivr.net/npm/font-th-sarabun-new@1.0.0/fonts/THSarabunNew-webfont.woff) format("woff"); font-display: swap; }
+@font-face { font-family: THS; font-weight: 700; src: local("TH Sarabun New Bold"), local("THSarabunNew-Bold"), url(https://cdn.jsdelivr.net/npm/font-th-sarabun-new@1.0.0/fonts/THSarabunNew_bold-webfont.woff) format("woff"); font-display: swap; }
+:root {
+  --primary:#1d4ed8; --primary-soft:#e8efff; --navy:#1e3a8a; --gold:#f59e0b;
+  --ok:#16a34a; --ok-soft:#dcfce7; --bad:#dc2626; --bad-soft:#fee2e2; --none:#94a3b8;
+  --bg:#f4f6fb; --card:#fff; --ink:#1e293b; --muted:#64748b; --line:#e2e8f0; --stripe:#f8fafc;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: THS, "Sarabun", sans-serif; font-size: 20px; line-height: 1.35; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--primary); }
+.hidden { display: none !important; }
+header.top { position: sticky; top: 0; z-index: 20; background: linear-gradient(135deg, var(--navy), var(--primary)); color: #fff;
+  padding: calc(env(safe-area-inset-top) + 8px) 14px 8px; display: flex; align-items: center; gap: 10px; }
+header.top img { width: 38px; height: 38px; border-radius: 50%; background: #fff; }
+header.top .t1 { font-weight: 700; font-size: 24px; line-height: 1.05; }
+header.top .t2 { font-size: 16px; opacity: .9; }
+header.top .sp { flex: 1; }
+header.top button { background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.35); color: #fff; border-radius: 10px; padding: 3px 10px; cursor: pointer; }
+nav.tabs { display: flex; gap: 6px; padding: 8px 12px; background: #fff; border-bottom: 1px solid var(--line); overflow-x: auto; position: sticky; top: 54px; z-index: 19; }
+nav.tabs a { white-space: nowrap; text-decoration: none; color: var(--muted); padding: 4px 12px; border-radius: 999px; font-weight: 700; }
+nav.tabs a.on { background: var(--primary-soft); color: var(--primary); }
+main { max-width: 980px; margin: 0 auto; padding: 12px 12px 90px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; margin-bottom: 12px; box-shadow: 0 1px 2px rgba(15,23,42,.04); }
+.card h2 { margin: 0 0 6px; font-size: 24px; color: var(--navy); }
+.card h3 { margin: 10px 0 4px; font-size: 21px; }
+.muted { color: var(--muted); } .small { font-size: 17px; }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.grow { flex: 1; }
+.btn { border: 0; border-radius: 10px; padding: 6px 14px; background: var(--primary); color: #fff; font-weight: 700; cursor: pointer; }
+.btn.light { background: var(--primary-soft); color: var(--primary); }
+.btn.ok { background: var(--ok); } .btn.bad { background: var(--bad); } .btn.gray { background: #e2e8f0; color: var(--ink); }
+.btn.block { width: 100%; padding: 10px; font-size: 22px; }
+.btn:disabled { opacity: .5; cursor: default; }
+input[type=text], input[type=password], input[type=date], input[type=number], select, textarea {
+  border: 1px solid #cbd5e1; border-radius: 10px; padding: 5px 10px; background: #fff; min-width: 0; }
+textarea { width: 100%; }
+label.f { display: block; margin: 6px 0; } label.f > span { display: block; font-size: 17px; color: var(--muted); }
+label.f input, label.f select, label.f textarea { width: 100%; }
+.stat { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.stat > div { background: var(--stripe); border: 1px solid var(--line); border-radius: 12px; padding: 6px 10px; text-align: center; }
+.stat b { display: block; font-size: 32px; line-height: 1; }
+.grade { margin-top: 10px; }
+.grade > .gh { font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.zones { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 7px; }
+.zone { border: 1.5px solid var(--line); border-radius: 12px; background: #fff; padding: 6px 4px 4px; text-align: center; cursor: pointer; }
+.zone b { display: block; font-size: 24px; line-height: 1.05; }
+.zone span { display: block; font-size: 15px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.zone.ok { background: var(--ok-soft); border-color: var(--ok); } .zone.ok b { color: var(--ok); }
+.zone.bad { background: var(--bad-soft); border-color: var(--bad); } .zone.bad b { color: var(--bad); }
+.pill { display: inline-block; border-radius: 999px; padding: 0 9px; font-size: 17px; font-weight: 700; }
+.pill.ok { background: var(--ok-soft); color: var(--ok); } .pill.bad { background: var(--bad-soft); color: var(--bad); } .pill.none { background: #f1f5f9; color: var(--muted); }
+.tbl { width: 100%; overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border-bottom: 1px solid var(--line); padding: 4px 6px; text-align: left; vertical-align: top; }
+th { background: var(--stripe); font-size: 18px; color: var(--muted); white-space: nowrap; }
+td.c, th.c { text-align: center; }
+tr.flag td { background: #fff7ed; }
+.sheet-bg { position: fixed; inset: 0; background: rgba(15,23,42,.45); z-index: 50; display: flex; align-items: flex-end; justify-content: center; }
+.sheet { background: #fff; width: 100%; max-width: 620px; max-height: 92vh; overflow: auto; border-radius: 18px 18px 0 0; padding: 14px 16px calc(env(safe-area-inset-bottom) + 16px); }
+@media (min-width: 700px) { .sheet-bg { align-items: center; } .sheet { border-radius: 18px; } }
+.sheet h2 { margin: 0; color: var(--navy); }
+.choice { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
+.choice button { border: 2px solid var(--line); background: #fff; border-radius: 14px; padding: 12px 6px; font-size: 26px; font-weight: 700; cursor: pointer; }
+.choice button.ok.on { background: var(--ok); border-color: var(--ok); color: #fff; }
+.choice button.bad.on { background: var(--bad); border-color: var(--bad); color: #fff; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips label { border: 1px solid #cbd5e1; border-radius: 999px; padding: 2px 10px; cursor: pointer; user-select: none; }
+.chips input { display: none; }
+.chips label:has(input:checked) { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); font-weight: 700; }
+.photo-box { border: 2px dashed #cbd5e1; border-radius: 14px; padding: 10px; text-align: center; }
+.photo-box img { max-width: 100%; max-height: 260px; border-radius: 10px; display: block; margin: 6px auto 0; }
+.thumb { max-width: 100%; border-radius: 10px; }
+.toast { position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom) + 18px); transform: translateX(-50%); background: #0f172a; color: #fff;
+  padding: 8px 16px; border-radius: 12px; z-index: 80; box-shadow: 0 6px 20px rgba(0,0,0,.25); }
+.login { max-width: 420px; margin: 8vh auto; }
+.login .logo { text-align: center; } .login .logo img { width: 96px; height: 96px; }
+.banner { background: #fef3c7; border: 1px solid #fcd34d; border-radius: 12px; padding: 6px 12px; margin-bottom: 10px; }
+.mapimg { width: 100%; border-radius: 12px; border: 1px solid var(--line); }
+.bar { height: 8px; background: #e2e8f0; border-radius: 99px; overflow: hidden; } .bar i { display: block; height: 100%; background: var(--ok); }
+@media print {
+  header.top, nav.tabs, .noprint, .toast { display: none !important; }
+  body { background: #fff; font-size: 16pt; } main { max-width: none; padding: 0; } .card { border: 0; box-shadow: none; padding: 0; }
+  th { background: #eee !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  tr.flag td { background: #fff7ed !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+<div id="app"><div class="login card"><div class="logo"><img src="../logo.png" alt=""></div><p style="text-align:center">กำลังโหลด…</p></div></div>
+<script type="module" src="app.js"></script>
+<script>
+if ("serviceWorker" in navigator && !location.search.includes("demo")) navigator.serviceWorker.register("sw.js").catch(() => {});
+</script>
+</body>
+</html>
