@@ -17,8 +17,8 @@
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js" crossorigin>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js" crossorigin>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js" crossorigin>
-  <script type="module" crossorigin src="./app-C1Kj98iA.js"></script>
-  <link rel="stylesheet" crossorigin href="./index-BAiQqy4e.css">
+  <script type="module" crossorigin src="./app-BUuTRvzm.js"></script>
+  <link rel="stylesheet" crossorigin href="./index-yLZ8UgdL.css">
 <link rel="manifest" href="./manifest.webmanifest"></head>
 <body>
 <div id="bootView" class="login-wrap"><div class="login-card" style="text-align:center"><img class="logo" src="logo.png" alt="ตราโรงเรียน"><p class="sub">กำลังเปิดระบบ…</p></div></div>
@@ -44,6 +44,7 @@
     <img class="logo" src="logo.png" alt="ตราโรงเรียน">
     <h1 id="loginTitle">SMART SPK</h1>
     <p class="sub"><span id="loginSchool">โรงเรียนโซ่พิสัยพิทยาคม</span><br>กรุณาลงชื่อเข้าใช้</p>
+    <div class="inapp-tip hidden" id="inAppTip">กำลังเปิดในหน้าต่างของไลน์ ซึ่ง<b>จำการเข้าสู่ระบบไม่ได้</b><br>แตะ <b>⋯</b> มุมขวาบน → <b>เปิดในเบราว์เซอร์อื่น</b> (Safari / Chrome)</div>
     <div class="tabs">
       <button type="button" class="active" data-login-tab="staff">ครู / บุคลากร</button>
       <button type="button" data-login-tab="parent">นักเรียน / ผู้ปกครอง</button>
@@ -86,5 +87,44 @@
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <div id="modalRoot"></div>
+<div id="bootHelp" class="boot-help hidden"><div class="boot-help-card">
+  <b>ใช้เวลานานผิดปกติ</b>
+  <p id="bootHelpStep" class="small"></p>
+  <p class="small">ลองตามลำดับ: ① แตะ “ลองใหม่” ② ถ้ายังไม่ได้ แตะ “ล้างข้อมูลในเครื่องแล้วเปิดใหม่” (ไม่ต้องลงชื่อเข้าใช้ใหม่)<span id="bootHelpInApp"><br>③ ถ้าเปิดจากไลน์ ให้แตะ ⋯ มุมขวาบน → เปิดในเบราว์เซอร์อื่น</span></p>
+  <button type="button" class="btn block" id="bootRetry">ลองใหม่</button>
+  <button type="button" class="btn ghost block" id="bootClear" style="margin-top:8px">ล้างข้อมูลในเครื่องแล้วเปิดใหม่</button>
+  <button type="button" class="btn ghost block" id="bootWait" style="margin-top:8px">รอต่อ</button>
+</div></div>
+<script>
+(function () {
+  var ua = navigator.userAgent || '';
+  window.__inApp = /\bLine\/|FBAN|FBAV|Instagram|MicroMessenger|KAKAOTALK/i.test(ua);
+  window.__bootT0 = Date.now(); window.__bootStep = window.__bootStep || 'โหลดหน้าเว็บ';
+  function $(id) { return document.getElementById(id); }
+  function vis(id) { var e = $(id); return e && !e.classList.contains('hidden'); }
+  if (window.__inApp) { var t = $('inAppTip'); if (t) t.classList.remove('hidden'); } else { var x = $('bootHelpInApp'); if (x) x.style.display = 'none'; }
+  var dismissed = 0;
+  function check() {
+    var stuck = vis('bootView') || vis('lgStat');
+    var h = $('bootHelp'); if (!h) return;
+    if (!stuck) { h.classList.add('hidden'); return; }
+    if (Date.now() - dismissed < 25000) return;
+    $('bootHelpStep').textContent = 'ค้างที่ขั้นตอน: ' + (window.__bootStep || '-') + ' · ' + Math.round((Date.now() - window.__bootT0) / 1000) + ' วินาที';
+    h.classList.remove('hidden');
+  }
+  setTimeout(function () { check(); setInterval(check, 5000); }, 20000);
+  $('bootRetry').onclick = function () { location.reload(); };
+  $('bootWait').onclick = function () { dismissed = Date.now(); $('bootHelp').classList.add('hidden'); };
+  $('bootClear').onclick = function () {
+    this.disabled = true; this.textContent = 'กำลังล้างข้อมูล…';
+    try { Object.keys(localStorage).forEach(function (k) { if (/^firestore_|^ss_/.test(k)) localStorage.removeItem(k); }); } catch (e) {}
+    var p = [];
+    try { if (window.caches) p.push(caches.keys().then(function (ks) { return Promise.all(ks.map(function (k) { return caches.delete(k); })); })); } catch (e) {}
+    try { if (navigator.serviceWorker) p.push(navigator.serviceWorker.getRegistrations().then(function (rs) { return Promise.all(rs.map(function (r) { return r.unregister(); })); })); } catch (e) {}
+    try { indexedDB.deleteDatabase('firestore/[DEFAULT]/spk-score-system/main'); } catch (e) {}
+    Promise.all(p).then(go, go); function go() { setTimeout(function () { location.reload(); }, 500); }
+  };
+})();
+</script>
 </body>
 </html>
