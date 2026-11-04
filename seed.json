@@ -1,0 +1,255 @@
+{
+ "meta": {
+  "schoolName": "โรงเรียนโซ่พิสัยพิทยาคม อ.โซ่พิสัย จ.บึงกาฬ",
+  "eventName": "ระบบจัดการเกียรติบัตร โรงเรียนโซ่พิสัยพิทยาคม",
+  "updatedAt": "2026-09-08T01:29:48.023Z"
+ },
+ "topics": [
+  {
+   "id": "topic_mtkb4q4hnyrr60",
+   "name": "เกียรติบัตร SPK Open House ประจำปี 2569",
+   "order": 0,
+   "createdAt": "2026-09-01T13:57:38.920Z",
+   "batches": [
+    {
+     "id": "batch_mtiqanzqg82hdi",
+     "name": "นักเรียนช่วยงานและเข้าร่วมโครงการโรงเรียนโซ่พิสัยพิทยาคม",
+     "order": 0,
+     "createdAt": "2026-09-01T13:57:38.920Z",
+     "n": 3240,
+     "fields": {
+      "name": {
+       "enabled": true,
+       "xPct": 49.65033567774936,
+       "yPct": 45.792063025072736,
+       "fontSizePx": 44,
+       "fontFamily": "Kanit",
+       "color": "#000000",
+       "align": "center",
+       "bold": false,
+       "maxWidthPct": 60
+      },
+      "certNo": {
+       "enabled": true,
+       "xPct": 90.10150255754475,
+       "yPct": 4.377031244972166,
+       "fontSizePx": 27,
+       "fontFamily": "IBM Plex Mono",
+       "color": "#000000",
+       "align": "center",
+       "bold": false,
+       "maxWidthPct": 46
+      },
+      "note": {
+       "enabled": true,
+       "xPct": 51.43062659846548,
+       "yPct": 51.29758342182321,
+       "fontSizePx": 28,
+       "fontFamily": "IBM Plex Mono",
+       "color": "#000000",
+       "align": "center",
+       "bold": false,
+       "maxWidthPct": 82
+      }
+     },
+     "w": 1600,
+     "h": 1131,
+     "img": "b1.jpg",
+     "list": "b1.json"
+    },
+    {
+     "id": "batch_mtkbdn2u6e4zgq",
+     "name": "วิทยากรครูโรงเรียนโซ่พิสัยพิทยาคม",
+     "order": 1,
+     "createdAt": "2026-09-02T16:34:09.538Z",
+     "n": 105,
+     "fields": {
+      "name": {
+       "enabled": true,
+       "xPct": 50.17857142857143,
+       "yPct": 43.484770263293754,
+       "fontSizePx": 45,
+       "fontFamily": "Kanit",
+       "color": "#000000",
+       "align": "center",
+       "bold": false,
+       "maxWidthPct": 60
+      },
+      "certNo": {
+       "enabled": true,
+       "xPct": 85.62156593406594,
+       "yPct": 3.7803391896008938,
+       "fontSizePx": 24,
+       "fontFamily": "IBM Plex Mono",
+       "color": "#000000",
+       "align": "center",
+       "bold": false,
+       "maxWidthPct": 59
+      },
+      "note": {
+       "enabled": false,
+       "xPct": 50,
+       "yPct": 65,
+       "fontSizePx": 26,
+       "fontFamily": "Sarabun",
+       "color": "#1B2340",
+       "align": "center",
+       "bold": false,
+       "maxWidthPct": 74
+      }
+     },
+     "w": 1600,
+     "h": 1131,
+     "img": "b2.jpg",
+     "list": "b2.json"
+    },
+    {
+     "id": "batch_mtkbjmwuac0yzi",
+     "name": "กิจกรรมกีฬา",
+     "order": 2,
+     "createdAt": "2026-09-02T16:39:46.795Z",
+     "n": 76,
+     "fields": {
+      "name": {
+       "enabled": true,
+       "xPct": 48.45552884615385,
+       "yPct": 43.509722939253145,
+       "fontSizePx": 45,
+       "fontFamily": "Kanit",
+       "color": "#000000",
+       "align": "center",
+       "bold": false,
+       "maxWidthPct": 60
+      },
+      "certNo": {
+       "enabled": true,
+       "xPct": 86.93853021978022,
+       "yPct": 4.101079855116618,
+       "fontSizePx": 24,
+       "fontFamily": "Kanit",
+       "color": "#000000",
+       "align": "center",
+       "bold": false,
+       "maxWidthPct": 52
+      },
+      "note": {
+       "enabled": true,
+       "xPct": 48.40058379120879,
+       "yPct": 48.73565552960292,
+       "fontSizePx": 26,
+       "fontFamily": "Kanit",
+       "color": "#000000",
+       "align": "center",
+       "bold": false,
+       "maxWidthPct": 74
+      }
+     },
+     "w": 1600,
+     "h": 1131,
+     "img": "b3.jpg",
+     "list": "b3.json"
+    },
+    {
+     "id": "batch_mtkbnjduad3n7b",
+     "name": "กิจกรรมการแข่งขันในงานสัปดาห์วิทยาศาสตร์  ปีการศึกษา 2569",
+     "order": 3,
+     "createdAt": "2026-09-02T16:42:01.566Z",
+     "n": 106,
+     "fields": {
+      "name": {
+       "enabled": true,
+       "xPct": 49.22132554945055,
+       "yPct": 35.400963689554295,
+       "fontSizePx": 45,
+       "fontFamily": "Kanit",
+       "color": "#000000",
+       "align": "center",
+       "bold": false,
+       "maxWidthPct": 60
+      },
+      "certNo": {
+       "enabled": true,
+       "xPct": 86.56936813186813,
+       "yPct": 3.0931586608442507,
+       "fontSizePx": 24,
+       "fontFamily": "Kanit",
+       "color": "#000000",
+       "align": "center",
+       "bold": false,
+       "maxWidthPct": 55
+      },
+      "note": {
+       "enabled": true,
+       "xPct": 48.62308429118774,
+       "yPct": 42.02706181420343,
+       "fontSizePx": 30,
+       "fontFamily": "Kanit",
+       "color": "#000000",
+       "align": "center",
+       "bold": false,
+       "maxWidthPct": 74
+      }
+     },
+     "w": 1600,
+     "h": 1131,
+     "img": "b4.jpg",
+     "list": "b4.json"
+    }
+   ]
+  },
+  {
+   "id": "topic_mtrzovn87loj28",
+   "name": "กิจกรรมกลุ่มสาระการเรียนรู้คณิตศาสตร์",
+   "order": 1,
+   "createdAt": "2026-09-08T01:27:11.924Z",
+   "batches": [
+    {
+     "id": "batch_mtrzp8baayluj5",
+     "name": "เกียรติบัตรสัปดาห์คณิตศาสตร์",
+     "order": 0,
+     "createdAt": "2026-09-08T01:29:48.023Z",
+     "n": 34,
+     "fields": {
+      "name": {
+       "enabled": true,
+       "xPct": 49.5939217032967,
+       "yPct": 43.38581999655825,
+       "fontSizePx": 40,
+       "fontFamily": "Kanit",
+       "color": "#000000",
+       "align": "center",
+       "bold": false,
+       "maxWidthPct": 60
+      },
+      "certNo": {
+       "enabled": true,
+       "xPct": 93.4323489010989,
+       "yPct": 4.292339460410954,
+       "fontSizePx": 24,
+       "fontFamily": "IBM Plex Mono",
+       "color": "#000000",
+       "align": "center",
+       "bold": false,
+       "maxWidthPct": 46
+      },
+      "note": {
+       "enabled": true,
+       "xPct": 49.496050824175825,
+       "yPct": 48.40475948681494,
+       "fontSizePx": 26,
+       "fontFamily": "Kanit",
+       "color": "#000000",
+       "align": "center",
+       "bold": false,
+       "maxWidthPct": 74
+      }
+     },
+     "w": 1600,
+     "h": 1131,
+     "img": "b5.jpg",
+     "list": "b5.json"
+    }
+   ]
+  }
+ ]
+}

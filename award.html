@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เกียรติบัตร · โรงเรียนโซ่พิสัยพิทยาคม</title>
+<link rel="icon" href="./icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Sarabun:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--b:#1d4ed8;--bg:#f3f5fb;--c:#1e293b;--mu:#64748b;--ok:#15803d;--line:#e2e8f0}
+*{box-sizing:border-box}body{margin:0;font-family:'Noto Sans Thai','Sarabun',system-ui,sans-serif;background:var(--bg);color:var(--c);font-size:16px}
+header{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:18px 16px}
+header h1{margin:0;font-size:20px;font-weight:600}header p{margin:4px 0 0;opacity:.9;font-size:14px}
+main{max-width:980px;margin:0 auto;padding:14px 12px 40px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+label{display:block;font-size:13px;color:var(--mu);margin-bottom:4px}
+select,input{width:100%;font:inherit;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff}
+.row{display:grid;gap:10px;grid-template-columns:1fr 1fr}@media(max-width:640px){.row{grid-template-columns:1fr}}
+.btn{display:inline-flex;align-items:center;gap:6px;font:inherit;font-weight:500;padding:9px 14px;border-radius:10px;border:1px solid var(--b);background:var(--b);color:#fff;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--b)}.btn:disabled{opacity:.5;cursor:default}.btn.sm{padding:5px 10px;font-size:14px}
+.list{display:flex;flex-direction:column;gap:6px;max-height:420px;overflow:auto}
+.it{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;cursor:pointer}
+.it:hover{background:#eff6ff;border-color:#bfdbfe}.it b{font-weight:500}.it .no{color:var(--mu);font-size:13px;white-space:nowrap}
+.muted{color:var(--mu);font-size:14px}.small{font-size:13px}
+#prev{width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.tip{background:#fef9c3;border:1px solid #fde68a;border-radius:10px;padding:8px 10px;font-size:14px}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid #cbd5e1;border-top-color:var(--b);border-radius:50%;animation:s 1s linear infinite;vertical-align:middle}@keyframes s{to{transform:rotate(360deg)}}
+.pill{display:inline-block;background:#dbeafe;color:#1e3a8a;border-radius:999px;padding:2px 10px;font-size:13px}
+</style>
+</head>
+<body>
+<header><h1>🏅 เกียรติบัตร โรงเรียนโซ่พิสัยพิทยาคม</h1><p>ค้นหาชื่อ แล้วดาวน์โหลดเกียรติบัตรของท่านได้ทันที · ไม่ต้องเข้าสู่ระบบ</p></header>
+<main>
+  <div class="card">
+    <div class="row">
+      <div><label>กิจกรรม / หัวข้อ</label><select id="topic"><option value="">กำลังโหลด…</option></select></div>
+      <div><label>แบบเกียรติบัตร</label><select id="batch"><option value="">—</option></select></div>
+    </div>
+    <div style="margin-top:10px"><label>ค้นหาชื่อ-นามสกุล (พิมพ์บางส่วนได้) หรือเลขที่เกียรติบัตร</label><input id="q" placeholder="เช่น สมชาย" autocomplete="off"></div>
+    <p class="muted" id="st" style="margin:8px 0 0"></p>
+  </div>
+  <div class="card" id="listCard" style="display:none"><div class="muted" style="margin-bottom:8px">แตะชื่อเพื่อดูและดาวน์โหลด</div><div class="list" id="list"></div><div class="actions"><button type="button" class="btn ghost sm" id="more" style="display:none">แสดงเพิ่ม</button></div></div>
+  <div class="card" id="prevCard" style="display:none">
+    <div id="who" style="font-weight:500;margin-bottom:8px"></div>
+    <canvas id="prev"></canvas>
+    <div class="actions"><button type="button" class="btn" id="dlPng">⬇️ ดาวน์โหลดรูป (PNG)</button><button type="button" class="btn ghost" id="dlPdf">📄 ดาวน์โหลด PDF</button><button type="button" class="btn ghost" id="share" style="display:none">🔗 คัดลอกลิงก์</button></div>
+    <p class="small muted" style="margin:8px 0 0">บน iPhone/iPad: แตะดาวน์โหลดแล้วเลือก "บันทึกรูปภาพ" หรือเปิดใน Safari หากกดจากแอป LINE แล้วไม่มีอะไรเกิดขึ้น</p>
+  </div>
+  <p class="small muted" style="text-align:center;margin-top:20px">SMART SPK · กลุ่มบริหารวิชาการ โรงเรียนโซ่พิสัยพิทยาคม</p>
+</main>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+import { getFirestore, collection, getDocs, doc, getDoc, query, where } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+const app = initializeApp({ apiKey: 'AIzaSyCyjqbIFbG365X_O8w04Padi5eH6BITKTU', authDomain: 'spk-score-system.firebaseapp.com', projectId: 'spk-score-system' });
+const db = getFirestore(app);
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+// ---------- cache (localStorage) : รายชื่อ/รูปแบบ เก็บตาม batch+เวลาอัปเดต · หัวข้อ/แบบ เก็บ 30 นาที ----------
+const LS = { get: k => { try { return JSON.parse(localStorage.getItem('aw_' + k)); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem('aw_' + k, JSON.stringify(v)); } catch (e) { try { Object.keys(localStorage).filter(x => x.startsWith('aw_tpl_') || x.startsWith('aw_list_')).forEach(x => localStorage.removeItem(x)); localStorage.setItem('aw_' + k, JSON.stringify(v)); } catch (e2) {} } } };
+async function meta() { const c = LS.get('meta'); if (c && Date.now() - c.at < 30 * 60000) return c;
+  const [ts, bs] = await Promise.all([getDocs(collection(db, 'ss_award_topic')), getDocs(collection(db, 'ss_award_batch'))]);
+  const m = { at: Date.now(), topics: ts.docs.map(d => ({ id: d.id, ...d.data() })).filter(t => !t.hidden).sort((a, b) => (a.order || 0) - (b.order || 0) || String(b.createdAt || '').localeCompare(String(a.createdAt || ''))),
+    batches: bs.docs.map(d => ({ id: d.id, ...d.data() })).filter(b => !b.hidden).sort((a, b) => (a.order || 0) - (b.order || 0)) };
+  LS.set('meta', m); return m; }
+async function gunzip(b64) { const bin = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+  if (typeof DecompressionStream !== 'undefined') { const ds = new DecompressionStream('gzip'); const w = ds.writable.getWriter(); w.write(bin); w.close(); return await new Response(ds.readable).text(); }
+  if (!window.pako) await new Promise((ok, no) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js'; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+  return window.pako.ungzip(bin, { to: 'string' }); }
+async function listOf(b) { const k = 'list_' + b.id, c = LS.get(k); if (c && c.at === (b.listAt || '')) return c.rows;
+  const d = await getDoc(doc(db, 'ss_award_list', b.id)); if (!d.exists()) return []; const rows = JSON.parse(await gunzip(d.data().gz || '')); LS.set(k, { at: b.listAt || '', rows }); return rows; }
+async function tplOf(b) { const k = 'tpl_' + b.id, c = LS.get(k); if (c && c.at === (b.tplAt || '')) return c.img;
+  const d = await getDoc(doc(db, 'ss_award_tpl', b.id)); if (!d.exists()) return ''; const img = d.data().img || ''; LS.set(k, { at: b.tplAt || '', img }); return img; }
+// ---------- วาดเกียรติบัตร (ตรงกับ views-award.js) ----------
+function wrap(ctx, text, maxW) { const out = []; for (const para of String(text).split(/\n/)) { let line = ''; for (const w of para.split(' ')) { const t = line ? line + ' ' + w : w; if (ctx.measureText(t).width <= maxW || !line) { line = t; } else { out.push(line); line = w; } }
+    // ตัดคำยาวไม่มีช่องว่าง (ภาษาไทย) ทีละตัวอักษร
+    const fix = []; for (let l of [line]) { while (ctx.measureText(l).width > maxW && l.length > 1) { let i = l.length - 1; while (i > 1 && ctx.measureText(l.slice(0, i)).width > maxW) i--; fix.push(l.slice(0, i)); l = l.slice(i); } fix.push(l); } out.push(...fix); } return out; }
+function drawCert(cv, img, b, r) { const w = b.w || img.naturalWidth, h = b.h || img.naturalHeight; cv.width = w; cv.height = h; const ctx = cv.getContext('2d'); ctx.drawImage(img, 0, 0, w, h); const k = w / 1600;
+  [['name', r[0]], ['certNo', r[1]], ['note', r[2]]].forEach(([key, text]) => { const f = (b.fields || {})[key]; if (!f || f.enabled === false || !text) return;
+    const size = (f.fontSizePx || 40) * k; ctx.font = `${f.bold ? '600 ' : ''}${size}px "${f.fontFamily || 'Kanit'}", "Noto Sans Thai", sans-serif`; ctx.fillStyle = f.color || '#000'; ctx.textAlign = f.align || 'center'; ctx.textBaseline = 'middle';
+    const x = (f.xPct || 50) / 100 * w, y = (f.yPct || 50) / 100 * h, maxW = (f.maxWidthPct || 80) / 100 * w, lines = wrap(ctx, text, maxW), lh = size * 1.35;
+    lines.forEach((l, i) => ctx.fillText(l, x, y + i * lh)); }); }
+async function fontsReady(b) { const fams = [...new Set(Object.values(b.fields || {}).map(f => f.fontFamily).filter(Boolean))]; try { await Promise.all(fams.map(f => document.fonts.load(`40px "${f}"`))); await document.fonts.ready; } catch (e) {} }
+// ---------- UI ----------
+const S = { meta: null, b: null, rows: [], hits: [], shown: 0, img: null, cur: null };
+const st = (t, spin) => $('#st').innerHTML = (spin ? '<span class="spin"></span> ' : '') + t;
+function fillTopics() { const m = S.meta, sel = $('#topic'); sel.innerHTML = m.topics.map(t => `<option value="${t.id}">${esc(t.name)}</option>`).join('') || '<option value="">ยังไม่มีข้อมูล</option>'; }
+function fillBatches(tid) { const bs = S.meta.batches.filter(b => b.topicId === tid); $('#batch').innerHTML = bs.map(b => `<option value="${b.id}">${esc(b.name)} (${b.n || 0} คน)</option>`).join('') || '<option value="">—</option>'; }
+async function pickBatch(id) { S.b = S.meta.batches.find(b => b.id === id) || null; S.rows = []; S.hits = []; $('#listCard').style.display = 'none'; $('#prevCard').style.display = 'none'; if (!S.b) return st('');
+  st('กำลังโหลดรายชื่อ…', true); try { S.rows = await listOf(S.b); st(`มีรายชื่อ ${S.rows.length} คน · พิมพ์ชื่อเพื่อค้นหา`); search(); } catch (e) { st('โหลดรายชื่อไม่สำเร็จ: ' + (e.message || e)); } }
+const norm = s => String(s || '').replace(/\s+/g, '').toLowerCase();
+function search() { const q = norm($('#q').value); if (!S.b) return; S.hits = q ? S.rows.map((r, i) => [r, i]).filter(([r]) => norm(r[0]).includes(q) || norm(r[1]) === q || (q.length >= 3 && norm(r[1]).includes(q))) : S.rows.map((r, i) => [r, i]);
+  S.shown = 0; $('#list').innerHTML = ''; $('#listCard').style.display = ''; showMore(); if (!q) $('#st').textContent = `มีรายชื่อ ${S.rows.length} คน · พิมพ์ชื่อเพื่อค้นหา`; else $('#st').textContent = S.hits.length ? `พบ ${S.hits.length} รายการ` : 'ไม่พบชื่อ · ลองพิมพ์เฉพาะชื่อ ไม่ต้องใส่คำนำหน้า'; }
+function showMore() { const part = S.hits.slice(S.shown, S.shown + 50); S.shown += part.length;
+  $('#list').insertAdjacentHTML('beforeend', part.map(([r, i]) => `<div class="it" data-i="${i}"><div><b>${esc(r[0])}</b>${r[2] ? `<div class="small" style="color:var(--mu)">${esc(r[2])}</div>` : ''}</div><span class="no">${esc(r[1] || '')}</span></div>`).join(''));
+  $('#more').style.display = S.shown < S.hits.length ? '' : 'none'; $('#more').textContent = `แสดงเพิ่ม (เหลือ ${S.hits.length - S.shown})`; }
+async function show(i) { const r = S.rows[i]; if (!r) return; S.cur = r; $('#prevCard').style.display = ''; $('#who').innerHTML = `<span class="pill">${esc(S.b.name)}</span> ${esc(r[0])}${r[1] ? ` <span class="muted">· เลขที่ ${esc(r[1])}</span>` : ''}`; $('#prevCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  st('กำลังสร้างเกียรติบัตร…', true); try { if (!S.img || S.img._b !== S.b.id) { const src = await tplOf(S.b); if (!src) throw new Error('ยังไม่มีรูปแบบเกียรติบัตร'); S.img = await new Promise((ok, no) => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => no(new Error('โหลดรูปแบบไม่สำเร็จ')); im.src = src; }); S.img._b = S.b.id; }
+    await fontsReady(S.b); drawCert($('#prev'), S.img, S.b, r); st(`พบ ${S.hits.length} รายการ`); } catch (e) { st('สร้างไม่สำเร็จ: ' + (e.message || e)); } }
+const fname = () => `เกียรติบัตร_${(S.cur[0] || '').replace(/[\\/:*?"<>|]/g, '')}`;
+function dlPng() { if (!S.cur) return; const a = document.createElement('a'); a.download = fname() + '.png'; a.href = $('#prev').toDataURL('image/png'); document.body.appendChild(a); a.click(); a.remove(); }
+async function dlPdf() { if (!S.cur) return; st('กำลังสร้าง PDF…', true); try { if (!window.jspdf) await new Promise((ok, no) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+    const cv = $('#prev'), land = cv.width >= cv.height, pdf = new window.jspdf.jsPDF({ orientation: land ? 'landscape' : 'portrait', unit: 'mm', format: 'a4' }); const pw = pdf.internal.pageSize.getWidth(), ph = pdf.internal.pageSize.getHeight(), sc = Math.min(pw / cv.width, ph / cv.height), w = cv.width * sc, h = cv.height * sc;
+    pdf.addImage(cv.toDataURL('image/jpeg', 0.92), 'JPEG', (pw - w) / 2, (ph - h) / 2, w, h); pdf.save(fname() + '.pdf'); st(`พบ ${S.hits.length} รายการ`); } catch (e) { st('สร้าง PDF ไม่สำเร็จ'); } }
+$('#topic').onchange = e => { fillBatches(e.target.value); pickBatch($('#batch').value); };
+$('#batch').onchange = e => pickBatch(e.target.value);
+$('#q').oninput = search; $('#more').onclick = showMore; $('#dlPng').onclick = dlPng; $('#dlPdf').onclick = dlPdf;
+$('#list').onclick = e => { const it = e.target.closest('.it'); if (it) show(+it.dataset.i); };
+(async () => { st('กำลังโหลด…', true); try { S.meta = await meta(); fillTopics(); const u = new URLSearchParams(location.search), b0 = u.get('b') && S.meta.batches.find(b => b.id === u.get('b'));
+    if (b0) { $('#topic').value = b0.topicId; fillBatches(b0.topicId); $('#batch').value = b0.id; } else fillBatches($('#topic').value); if (u.get('q')) $('#q').value = u.get('q'); await pickBatch($('#batch').value); } catch (e) { st('โหลดข้อมูลไม่สำเร็จ: ' + (e.message || e)); } })();
+</script>
+</body>
+</html>
