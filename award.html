@@ -28,11 +28,16 @@ select,input{width:100%;font:inherit;padding:10px 12px;border:1px solid #cbd5e1;
 .tip{background:#fef9c3;border:1px solid #fde68a;border-radius:10px;padding:8px 10px;font-size:14px}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid #cbd5e1;border-top-color:var(--b);border-radius:50%;animation:s 1s linear infinite;vertical-align:middle}@keyframes s{to{transform:rotate(360deg)}}
 .pill{display:inline-block;background:#dbeafe;color:#1e3a8a;border-radius:999px;padding:2px 10px;font-size:13px}
+.dev-card{display:flex;gap:14px;align-items:center;max-width:420px;margin:0 auto;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 4px 14px rgba(15,23,42,.06)}
+.dev-ph{width:56px;height:56px;border-radius:50%;flex:none;overflow:hidden;background:linear-gradient(160deg,#1e3a8a,#3b82f6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;font-weight:700;border:3px solid #fff;box-shadow:0 3px 10px rgba(30,58,138,.22)}
+.dev-ph img{width:100%;height:100%;object-fit:cover;display:block}.dev-l{font-size:12px;color:var(--mu)}.dev-n{font-size:15px;font-weight:700;color:#1e3a8a}.dev-s{font-size:13px;color:#475569}
+body.embed header{display:none}body.embed main{padding-top:8px}
 </style>
 </head>
 <body>
 <header><h1>🏅 เกียรติบัตร โรงเรียนโซ่พิสัยพิทยาคม</h1><p>ค้นหาชื่อ แล้วดาวน์โหลดเกียรติบัตรของท่านได้ทันที · ไม่ต้องเข้าสู่ระบบ</p></header>
 <main>
+  <div class="card" id="meCard" style="display:none;border-color:#bfdbfe;background:#eff6ff"><div style="font-weight:600;margin-bottom:6px" id="meTitle"></div><div class="list" id="meList"></div><p class="muted small" id="meSt" style="margin:6px 0 0"></p></div>
   <div class="card">
     <div class="row">
       <div><label>กิจกรรม / หัวข้อ</label><select id="topic"><option value="">กำลังโหลด…</option></select></div>
@@ -48,7 +53,8 @@ select,input{width:100%;font:inherit;padding:10px 12px;border:1px solid #cbd5e1;
     <div class="actions"><button type="button" class="btn" id="dlPng">⬇️ ดาวน์โหลดรูป (PNG)</button><button type="button" class="btn ghost" id="dlPdf">📄 ดาวน์โหลด PDF</button><button type="button" class="btn ghost" id="share" style="display:none">🔗 คัดลอกลิงก์</button></div>
     <p class="small muted" style="margin:8px 0 0">บน iPhone/iPad: แตะดาวน์โหลดแล้วเลือก "บันทึกรูปภาพ" หรือเปิดใน Safari หากกดจากแอป LINE แล้วไม่มีอะไรเกิดขึ้น</p>
   </div>
-  <p class="small muted" style="text-align:center;margin-top:20px">SMART SPK · โรงเรียนโซ่พิสัยพิทยาคม<br>ออกแบบและพัฒนาระบบโดย นายศาสตราวุฒิ อาชนะชัย</p>
+  <div id="dev" style="margin-top:20px"></div>
+  <p class="small muted" style="text-align:center;margin-top:10px">SMART SPK · โรงเรียนโซ่พิสัยพิทยาคม</p>
 </main>
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
@@ -82,6 +88,16 @@ function drawCert(cv, img, b, r) { const w = b.w || img.naturalWidth, h = b.h ||
     const x = (f.xPct || 50) / 100 * w, y = (f.yPct || 50) / 100 * h, maxW = (f.maxWidthPct || 80) / 100 * w, lines = wrap(ctx, text, maxW), lh = size * 1.35;
     lines.forEach((l, i) => ctx.fillText(l, x, y + i * lh)); }); }
 async function fontsReady(b) { const fams = [...new Set(Object.values(b.fields || {}).map(f => f.fontFamily).filter(Boolean))]; try { await Promise.all(fams.map(f => document.fonts.load(`40px "${f}"`))); await document.fonts.ready; } catch (e) {} }
+async function devCard() { try { const k = LS.get('dev'); let d = k && Date.now() - k.at < 24 * 3600000 ? k.d : null; if (!d) { const x = await getDoc(doc(db, 'ss_config', 'public')); d = x.exists() ? x.data() : {}; LS.set('dev', { at: Date.now(), d: { developer: d.developer || '', devGroup: d.devGroup || '', devDept: d.devDept || '', devSchool: d.devSchool || '', devPhoto: d.devPhoto || '' } }); d = LS.get('dev').d; }
+    if (!d.developer) return; let name = d.developer.trim(), group = (d.devGroup || '').trim(); const m = name.match(/^(.*?)\s+((?:กลุ่มสาระ|สังกัด|ฝ่าย).*)$/); if (m) { name = m[1].trim(); if (!group) group = m[2].trim(); }
+    $('#dev').innerHTML = `<div class="dev-card"><div class="dev-ph">${d.devPhoto ? `<img src="${d.devPhoto}" alt="">` : `<span>${esc(name.replace(/^(นาย|นาง|นางสาว|ครู|ดร\.)\s*/, '')[0] || '?')}</span>`}</div><div><div class="dev-l">ออกแบบและพัฒนาระบบโดย</div><div class="dev-n">${esc(name)}</div>${[group, d.devDept, d.devSchool].filter(Boolean).map(x => `<div class="dev-s">${esc(x)}</div>`).join('')}</div></div>`; } catch (e) {} }
+// ---------- เกียรติบัตรของฉัน (?me=ชื่อ จากแอป SMART SPK): ค้นทุกแบบด้วยชื่อ ----------
+const normName = s => String(s || '').replace(/\s+/g, '').replace(/^(นางสาว|นาย|นาง|เด็กชาย|เด็กหญิง|ด\.ช\.|ด\.ญ\.|น\.ส\.|ครู|ว่าที่ร\.ต\.|ว่าที่ร้อยตรี|ดร\.)/, '').toLowerCase();
+async function myCerts(me) { $('#meCard').style.display = ''; $('#meTitle').textContent = `🎖️ เกียรติบัตรของ ${me}`; $('#meSt').innerHTML = '<span class="spin"></span> กำลังค้นหาในทุกกิจกรรม…'; const key = normName(me), hits = [];
+  for (const b of S.meta.batches) { try { const rows = await listOf(b); rows.forEach((r, i) => { if (normName(r[0]) === key) hits.push({ b, i, r }); }); } catch (e) {} }
+  $('#meList').innerHTML = hits.map((h, k) => `<div class="it" data-me="${k}"><div><b>${esc(h.r[0])}</b><div class="small" style="color:var(--mu)">${esc((S.meta.topics.find(t => t.id === h.b.topicId) || {}).name || '')} › ${esc(h.b.name)}${h.r[2] ? ' · ' + esc(h.r[2]) : ''}</div></div><span class="no">${esc(h.r[1] || '')}</span></div>`).join('');
+  $('#meSt').textContent = hits.length ? `พบ ${hits.length} รายการ · แตะเพื่อดูและดาวน์โหลด` : 'ยังไม่พบเกียรติบัตรในชื่อนี้ · ค้นหาด้วยตนเองด้านล่างได้ (ชื่ออาจสะกดต่างกัน)';
+  $('#meList').onclick = async e => { const it = e.target.closest('.it'); if (!it) return; const h = hits[+it.dataset.me]; $('#topic').value = h.b.topicId; fillBatches(h.b.topicId); $('#batch').value = h.b.id; await pickBatch(h.b.id); show(h.i); }; }
 // ---------- UI ----------
 const S = { meta: null, b: null, rows: [], hits: [], shown: 0, img: null, cur: null };
 const st = (t, spin) => $('#st').innerHTML = (spin ? '<span class="spin"></span> ' : '') + t;
@@ -107,8 +123,8 @@ $('#topic').onchange = e => { fillBatches(e.target.value); pickBatch($('#batch')
 $('#batch').onchange = e => pickBatch(e.target.value);
 $('#q').oninput = search; $('#more').onclick = showMore; $('#dlPng').onclick = dlPng; $('#dlPdf').onclick = dlPdf;
 $('#list').onclick = e => { const it = e.target.closest('.it'); if (it) show(+it.dataset.i); };
-(async () => { st('กำลังโหลด…', true); try { S.meta = await meta(); fillTopics(); const u = new URLSearchParams(location.search), b0 = u.get('b') && S.meta.batches.find(b => b.id === u.get('b'));
-    if (b0) { $('#topic').value = b0.topicId; fillBatches(b0.topicId); $('#batch').value = b0.id; } else fillBatches($('#topic').value); if (u.get('q')) $('#q').value = u.get('q'); await pickBatch($('#batch').value); } catch (e) { st('โหลดข้อมูลไม่สำเร็จ: ' + (e.message || e)); } })();
+(async () => { const u0 = new URLSearchParams(location.search); if (u0.get('embed')) document.body.classList.add('embed'); devCard(); st('กำลังโหลด…', true); try { S.meta = await meta(); fillTopics(); const u = new URLSearchParams(location.search), b0 = u.get('b') && S.meta.batches.find(b => b.id === u.get('b'));
+    if (b0) { $('#topic').value = b0.topicId; fillBatches(b0.topicId); $('#batch').value = b0.id; } else fillBatches($('#topic').value); if (u.get('q')) $('#q').value = u.get('q'); await pickBatch($('#batch').value); if (u.get('me')) await myCerts(u.get('me')); } catch (e) { st('โหลดข้อมูลไม่สำเร็จ: ' + (e.message || e)); } })();
 </script>
 </body>
 </html>
