@@ -48,7 +48,7 @@ select,input{width:100%;font:inherit;padding:10px 12px;border:1px solid #cbd5e1;
     <div class="actions"><button type="button" class="btn" id="dlPng">⬇️ ดาวน์โหลดรูป (PNG)</button><button type="button" class="btn ghost" id="dlPdf">📄 ดาวน์โหลด PDF</button><button type="button" class="btn ghost" id="share" style="display:none">🔗 คัดลอกลิงก์</button></div>
     <p class="small muted" style="margin:8px 0 0">บน iPhone/iPad: แตะดาวน์โหลดแล้วเลือก "บันทึกรูปภาพ" หรือเปิดใน Safari หากกดจากแอป LINE แล้วไม่มีอะไรเกิดขึ้น</p>
   </div>
-  <p class="small muted" style="text-align:center;margin-top:20px">SMART SPK · กลุ่มบริหารวิชาการ โรงเรียนโซ่พิสัยพิทยาคม</p>
+  <p class="small muted" style="text-align:center;margin-top:20px">SMART SPK · โรงเรียนโซ่พิสัยพิทยาคม<br>ออกแบบและพัฒนาระบบโดย นายศาสตราวุฒิ อาชนะชัย</p>
 </main>
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
@@ -59,11 +59,11 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 // ---------- cache (localStorage) : รายชื่อ/รูปแบบ เก็บตาม batch+เวลาอัปเดต · หัวข้อ/แบบ เก็บ 30 นาที ----------
 const LS = { get: k => { try { return JSON.parse(localStorage.getItem('aw_' + k)); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem('aw_' + k, JSON.stringify(v)); } catch (e) { try { Object.keys(localStorage).filter(x => x.startsWith('aw_tpl_') || x.startsWith('aw_list_')).forEach(x => localStorage.removeItem(x)); localStorage.setItem('aw_' + k, JSON.stringify(v)); } catch (e2) {} } } };
-async function meta() { const c = LS.get('meta'); if (c && Date.now() - c.at < 30 * 60000) return c;
+async function meta() { const c = LS.get('meta'); if (c && c.topics && c.topics.length && Date.now() - c.at < 10 * 60000) return c;
   const [ts, bs] = await Promise.all([getDocs(collection(db, 'ss_award_topic')), getDocs(collection(db, 'ss_award_batch'))]);
   const m = { at: Date.now(), topics: ts.docs.map(d => ({ id: d.id, ...d.data() })).filter(t => !t.hidden).sort((a, b) => (a.order || 0) - (b.order || 0) || String(b.createdAt || '').localeCompare(String(a.createdAt || ''))),
     batches: bs.docs.map(d => ({ id: d.id, ...d.data() })).filter(b => !b.hidden).sort((a, b) => (a.order || 0) - (b.order || 0)) };
-  LS.set('meta', m); return m; }
+  if (m.topics.length) LS.set('meta', m); return m; }
 async function gunzip(b64) { const bin = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
   if (typeof DecompressionStream !== 'undefined') { const ds = new DecompressionStream('gzip'); const w = ds.writable.getWriter(); w.write(bin); w.close(); return await new Response(ds.readable).text(); }
   if (!window.pako) await new Promise((ok, no) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js'; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
