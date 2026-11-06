@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="SPK Pro.">
 <title>SPK Pro.</title>
-<link rel="icon" href="logo.png">
+<link rel="icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,12 +21,12 @@
   <link rel="stylesheet" crossorigin href="./index-ciYFIjhC.css">
 <link rel="manifest" href="./manifest.webmanifest"></head>
 <body>
-<div id="bootView" class="login-wrap"><div class="login-card" style="text-align:center"><img class="logo" src="logo.png" alt="ตราโรงเรียน"><p class="sub">กำลังเปิดระบบ…</p></div></div>
+<div id="bootView" class="login-wrap"><div class="login-card" style="text-align:center"><img class="logo" src="app-logo.png" alt="SPK Pro"><p class="sub">กำลังเปิดระบบ…</p></div></div>
 
 <!-- ตั้งค่าครั้งแรก -->
 <div id="setupView" class="login-wrap hidden">
   <div class="login-card">
-    <img class="logo" src="logo.png" alt="ตราโรงเรียน">
+    <img class="logo" src="app-logo.png" alt="SPK Pro">
     <h1>ตั้งค่าระบบครั้งแรก</h1>
     <p class="setup-note">ยังไม่มีผู้ดูแลระบบ กรอกข้อมูลเพื่อสร้างบัญชีผู้ดูแลระบบคนแรก (ทำได้ครั้งเดียว)</p>
     <label for="suName">ชื่อ-สกุล</label><input id="suName">
@@ -41,7 +41,7 @@
 <!-- เข้าสู่ระบบ -->
 <div id="loginView" class="login-wrap hidden">
   <div class="login-card">
-    <img class="logo" src="logo.png" alt="ตราโรงเรียน">
+    <img class="logo" src="app-logo.png" alt="SPK Pro">
     <h1 id="loginTitle">SMART SPK</h1>
     <p class="sub"><span id="loginSchool">โรงเรียนโซ่พิสัยพิทยาคม</span><br>กรุณาลงชื่อเข้าใช้</p>
     <div class="inapp-tip hidden" id="inAppTip">กำลังเปิดในหน้าต่างของไลน์ ซึ่ง<b>จำการเข้าสู่ระบบไม่ได้</b><br>แตะ <b>⋯</b> มุมขวาบน → <b>เปิดในเบราว์เซอร์อื่น</b> (Safari / Chrome)</div>
@@ -71,7 +71,7 @@
 <div id="appView" class="hidden">
   <header class="topbar">
     <button class="icon-btn" id="menuBtn" type="button" aria-label="เปิดเมนู">☰</button>
-    <div class="brand"><img src="logo.png" alt="ตราโรงเรียน"><div><b id="appName">SMART SPK</b><small id="schoolName"></small></div></div>
+    <div class="brand"><img src="app-logo.png" alt="SPK Pro"><div><b id="appName">SMART SPK</b><small id="schoolName"></small></div></div>
     <div class="top-search"><input id="gSearch" type="search" placeholder="ค้นหานักเรียน: ชื่อ หรือ เลขประจำตัว" autocomplete="off"></div>
     <div class="who"><span class="demo-tag">โหมดทดลอง</span><span class="sync-chip ok" id="syncChip">บันทึกแล้ว</span><button class="icon-btn" id="refreshBtn" type="button" aria-label="โหลดข้อมูลล่าสุด" title="โหลดข้อมูลล่าสุด">↻</button><span id="topUser"></span><button class="btn ghost sm" id="logoutBtn" type="button">ออกจากระบบ</button></div>
   </header>
